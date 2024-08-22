@@ -6,7 +6,6 @@ import { Button } from "@/components/ui/button"
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -17,11 +16,14 @@ import { SignupValidation } from "@/lib/validation"
 import Loader from "@/components/shared/Loader"
 import { Link } from "react-router-dom"
 import { createUserAccount } from "@/lib/appwrite/api"
- 
+import { useToast } from "@/components/ui/use-toast"
 
 
 const SignupForm = () => {
+  const {toast} = useToast();
   const isLoading = false;
+
+  
 
   // 1. Define your form.
   const form = useForm<z.infer<typeof SignupValidation>>({
@@ -37,7 +39,8 @@ const SignupForm = () => {
   // 2. Define a submit handler.
   async function onSubmit(values: z.infer<typeof SignupValidation>) {
     const newUser = await createUserAccount(values);
-    console.log(values)
+    if (!newUser) return toast({title: 'Signup failed'})
+    // const session = await signInAccount()
   }
   
   return (
@@ -113,12 +116,16 @@ const SignupForm = () => {
             )}
           </Button>
 
+          
+
           <p className="text-small-regular text-light-2 text-center mt-2">Already have an account? 
             <Link to='/signin' className="text-primary-500 text-small-semibold ml-1">Log in</Link>
           </p>
         </form>
+        
       </div>
     </Form>
+    
   )
 }
 
