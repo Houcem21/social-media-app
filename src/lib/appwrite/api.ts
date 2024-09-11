@@ -55,9 +55,13 @@ export async function saveUserToDB(user: {
 }
 
 export async function signInAccount(user: {email:string; password: string}) {
+    console.log(user.email, user.password)
+    console.log(account)
     try {
-        const session = await account.createEmailPasswordSession(user.email,user.password);
-        return session
+        const session = account.createEmailPasswordSession(user.email,user.password);
+        session.then(res => {console.log(res); return res}
+        , error => console.log(error)
+    )
     } catch (error) {
         console.log(error)
         return error
@@ -76,6 +80,16 @@ export async function getCurrentUser() {
 
         if(!currentUser) throw Error
         return currentUser.documents[0];
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+
+export async function signOutAccount() {
+    try {
+        const session = await account.deleteSession('current');
+        return session;
     } catch (error) {
         console.log(error)
     }
