@@ -11,6 +11,7 @@ const Topbar = () => {
   const {user} = useUserContext(); 
 
   useEffect(() => {
+    console.log(user)
     if (isSuccess) navigate(0) 
   }, [isSuccess])
   
@@ -27,7 +28,7 @@ const Topbar = () => {
             <img src="/assets/icons/logout.svg" alt="Logout" />
           </Button>
           <Link to={`/profile/${user.id}`} className='flex-center gap-3'>
-            <img src={user.imageUrl || 'assets/images/profile-placeholder.svg'} alt="profile" className='h-8 w-8 rounded-full' />
+            <img src={user.imageUrl || '/assets/icons/profile-placeholder.svg'} alt="profile" className='h-8 w-8 rounded-full' />
           </Link>
         </div>
       </div>
