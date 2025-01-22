@@ -14,6 +14,8 @@ export const useCreateUserAccount = () => {
     })
 }
 
+console.log(useInfiniteQuery)
+
 export const useSignInAccount = () => {
     return useMutation({
         mutationFn: 

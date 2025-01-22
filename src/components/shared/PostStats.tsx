@@ -8,6 +8,7 @@ type PostStatsPros = {
 const PostStats = ({post, userId}: PostStatsPros) => {
 
     const [liked, setLiked] = useState(false)
+    console.log(userId, liked);
 
   return (
     <div className="flex justify-between items-center z-20">
