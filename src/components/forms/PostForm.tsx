@@ -2,6 +2,8 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
 
+import { useNavigate } from "react-router-dom"
+
 import { Button } from "@/components/ui/button"
 import {
   Form,
@@ -16,14 +18,21 @@ import { Textarea } from "../ui/textarea"
 import FileUploader from "../shared/FileUploader"
 import { PostValidation } from "@/lib/validation"
 import { Models } from "appwrite"
+import { useUserContext } from "@/context/AuthContext"
+import { useToast } from "../ui/use-toast"
+import { useCreatePost } from "@/lib/react-query/queriesAndMutations"
  
 type PostFormProps = {
   post?: Models.Document
 }
 
 const PostForm = ({post}: PostFormProps) => {
-
-
+  const {mutateAsync: createPost, 
+    isPending: isLoadingCreate} = useCreatePost()
+  
+  const {user} = useUserContext()
+  const {toast} = useToast()
+  const navigate = useNavigate()
 
   const form = useForm<z.infer<typeof PostValidation>>({
     resolver: zodResolver(PostValidation),
@@ -35,8 +44,17 @@ const PostForm = ({post}: PostFormProps) => {
     },
   })
       
-  function onSubmit(values: z.infer<typeof PostValidation>) {
-    console.log(values)
+  async function onSubmit(values: z.infer<typeof PostValidation>) {
+    const newPost = await createPost (
+      {
+        ...values,
+        userId: user.id,
+      }
+    )
+
+    if(!newPost) toast({title: 'Please try again'})
+
+    else navigate('/')
   }
   return (
     <Form {...form}>
