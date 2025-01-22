@@ -19,6 +19,7 @@ import { useToast } from "@/components/ui/use-toast"
 import { useSignInAccount } from "@/lib/react-query/queriesAndMutations"
 import { useUserContext } from "@/context/AuthContext"
 import { account } from "@/lib/appwrite/config"
+import { useEffect } from "react"
 
 
 const SigninForm = () => {
@@ -26,6 +27,11 @@ const SigninForm = () => {
   const {checkAuthUser, isLoading: isUserLoading} = useUserContext();
   const navigate = useNavigate();
 
+  useEffect(() => {
+    console.log(isUserLoading);
+    console.log(account);
+  }, [])
+  
   
   const {mutateAsync: signInAccount, isPending: isSigningIn} = useSignInAccount();
   // 1. Define your form.

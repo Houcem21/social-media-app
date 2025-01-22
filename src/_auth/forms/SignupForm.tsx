@@ -18,12 +18,19 @@ import { Link, useNavigate } from "react-router-dom"
 import { useToast } from "@/components/ui/use-toast"
 import { useCreateUserAccount, useSignInAccount } from "@/lib/react-query/queriesAndMutations"
 import { useUserContext } from "@/context/AuthContext"
+import { useEffect } from "react"
 
 
 const SignupForm = () => {
   const {toast} = useToast();
   const {checkAuthUser, isLoading: isUserLoading} = useUserContext();
   const navigate = useNavigate();
+
+  useEffect(() => {
+      console.log(isUserLoading);
+      console.log(isSigningIn);
+      
+    }, [])
 
   const {mutateAsync: createUserAccount, isPending: isCreatingAccount} = useCreateUserAccount();
 
@@ -48,7 +55,7 @@ const SignupForm = () => {
       email: values.email,
       password: values.password
     })
-    session.then(res => toast({title: "Sign in Succeded!"}), err => toast({title: "Sign in Failed!"}))
+    session.then(res => {toast({title: "Sign in Succeded!"}); console.log(res);}, err => {toast({title: "Sign in Failed!"}); console.log(err);})
     const isLoggedIn = await checkAuthUser();
 
     if(isLoggedIn) {
